@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <title>Enviar</title>
+  <style>
+    .navbar{
+      background: linear-gradient(90deg, rgba(255,222,89,1) 0%, rgba(255,145,77,1) 100%);
+    }
+    .container{
+      margin-left: 10%;
+    }
+    .login{
+      background-color: white;
+      color: black;
+
+    }
+    .form-group1{
+      padding-top: 1.5%;
+    }
+    .save{
+      margin-left: 8%;
+    }
+    .botao{
+      margin-top: 5%;
+      margin-right: 5%;
+      color: black;
+    }
+    .inicial{
+      margin-left: 5%;
+    }
+
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="../../../assets/images/savegame.png"  width="40" height="40"/>Save Room
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="!usuario; then thenBlock else elseBlock" class="collapse navbar-collapse ml-auto" id="navbarSupportedContent"></div>
+    <ng-template #thenBlock >
+      <div class="ml-auto">
+        <button class="btn btn-outline-success me-2 login " routerLink="/login" type="button">Login</button>
+      </div>
+    </ng-template>
+    <ng-template #elseBlock >
+      <div class="ml-auto">
+        <button *ngIf="usuarioAtt.admin == 'ADMIN'" class="btn btn-outline-success me-2 login" routerLink="/requisicoes" type="button">Requisições</button>
+        <button  class="btn btn-outline-success me-2 login" routerLink="/conta" type="button">{{usuarioAtt.nome}}</button>
+        <button  class="btn btn-outline-success me-2 login" (click)="logout()" type="button">Logout</button>
+      </div>
+    </ng-template>
+  </div>
+</nav>
+<div class="row inicial">
+  <a routerLink="/requisicoes"><- Voltar para as requisições</a>
+</div>
+<div class="container">
+
+  <div class="row login">
+    <h2>Requisição de um jogo</h2>
+  </div>
+  <div class="row justify-content-center">
+    <form #saveForm="ngForm" class="needs-validation">
+      <div class="form-group1 row">
+        <label for="console" class="col-form-label col-sm-1">Console*</label>
+        <div ngbDropdown class="d-inline-block col-md-2">
+          <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+            {{save.nomeConsole}}
+          </button>
+          <div class="text-danger" *ngIf="validacaoConsole == true" >Escolha um console</div>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+            <button ngbDropdownItem [value]="save.nomeConsole">{{save.nomeConsole}}</button>
+
+          </div>
+        </div>
+        <label for="formFile" class="form-label col-sm-2 save" >Capa do jogo*</label>
+        <div class="col-md-5">
+          <input class="form-control" type="file" id="formFile" (change)="handleFileSelected($event)">
+          <div *ngIf="validacaoCapa == true" class="text-danger">faça upload de uma capa</div>
+        </div>
+      </div>
+      <div class="form-group1 row">
+        <label for="jogo" class="col-form-label col-md-1" aria-describedby="jogoHelp">Jogo*</label>
+
+        <div class="col-md-5">
+          <input [(ngModel)]="save.requisicao_nomeJogo" type="text" class="form-control" id="addjogo" name="addjogo" placeholder="Nome do jogo que quer adicionar" >
+          <div *ngIf="validacaoJogo == true" class="text-danger">Esse campo não pode estar vazio</div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center row">
+        <button (click)="DeletarSave(save.id_save)" type="submit" class="btn btn-danger col-md-2 botao">Cancelar requisição</button>
+        <button (click)="AdicionarJogo()" type="submit" class="btn btn-primary col-md-2 botao">Confirmar requisição</button>
+      </div>
+    </form>
+  </div>
+
+
+</div>
+</body>
+</html>
+<router-outlet></router-outlet>

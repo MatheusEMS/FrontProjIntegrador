@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <style>
+    .navbar{
+      background: linear-gradient(90deg, rgba(255,222,89,1) 0%, rgba(255,145,77,1) 100%);
+    }
+    .login{
+      background-color: white;
+      color: black;
+
+    }
+    .d-flex{
+      padding-left: 7%;
+      margin-top: 2%;
+    }
+    .enviar{
+      margin-top: 2%;
+      margin-left: 34.9%;
+    }
+    .home2{
+      margin-top: 3%;
+      padding-left: 6%;
+    }
+    .home3{
+      margin-top: 2%;
+    }
+    .d-inline-block{
+      margin-left: 41.5%;
+    }
+    .edit{
+      cursor: pointer;
+      text-decoration: underline;
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+<av class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="../../../assets/images/savegame.png"  width="40" height="40"/>Save Room
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="!usuario; then thenBlock else elseBlock" class="collapse navbar-collapse ml-auto" id="navbarSupportedContent"></div>
+    <ng-template #thenBlock >
+      <div class="ml-auto">
+        <button class="btn btn-outline-success me-2 login " routerLink="/login" type="button">Login</button>
+      </div>
+    </ng-template>
+    <ng-template #elseBlock >
+      <div class="ml-auto">
+        <button class="btn btn-outline-success me-2 login" routerLink="/requisicoes" type="button">Requisiçôes</button>
+        <button  class="btn btn-outline-success me-2 login" routerLink="/conta" type="button">{{usuarioAtt.nome}}</button>
+        <button  class="btn btn-outline-success me-2 login" (click)="logout()" type="button">Logout</button>
+      </div>
+    </ng-template>
+  </div>
+</av>
+<div class="container">
+  <div class="row">
+    <a (click)="VoltarSaves(saves.idJogo)" class="edit"><- Voltar</a>
+  </div>
+  <div class="row">
+    <form class="d-flex col-md-5" role="search">
+      <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+    <button type="button" class="btn btn-primary col-md-2 enviar" routerLink="/enviar">Enviar arquivo de save</button>
+  </div>
+  <div class="row home2">
+    <h3 class="col-md-4">Informações do save</h3>
+    <div ngbDropdown class="d-inline-block col-md-2">
+      <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+        Escolha um console
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+        <button ngbDropdownItem [value]="'Nintendinho'" (click)="goToDestination('Nintendinho')">Nintendinho</button>
+        <button ngbDropdownItem [value]="'Super Nintendo'" (click)="goToDestination('Super Nintendo')">Super Nintendo</button>
+        <button ngbDropdownItem [value]="'Mega Drive'" (click)="goToDestination('Mega Drive')">Mega Drive</button>
+        <button ngbDropdownItem [value]="'Playstation'" (click)="goToDestination('Playstation')">Playstation</button>
+        <button ngbDropdownItem [value]="'Nintendo 64'" (click)="goToDestination('Nintendo 64')">Nintendo 64</button>
+        <button ngbDropdownItem [value]="'Playstation 2'" (click)="goToDestination('Playstation 2')">Playstation 2</button>
+        <button ngbDropdownItem [value]="'Gamecube'" (click)="goToDestination('Gamecube')">Gamecube</button>
+        <button ngbDropdownItem [value]="'Xbox'" (click)="goToDestination('Xbox')">Xbox</button>
+        <button ngbDropdownItem [value]="'Outros'" (click)="goToDestination('Outros')">Outros</button>
+      </div>
+    </div>
+  </div>
+  <div class="row home3">
+    <div class="mx-auto p-2" style="width: 1000px;">
+      <div class="card">
+
+      <h6>{{saves.descricao}}</h6>
+        <h6>{{saves.resumo}}</h6>
+        <h6>{{saves.emuladores}}</h6>
+        <h6>{{saves.idJogo}}</h6>
+        <h6>{{saves.id_save}}</h6>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<router-outlet></router-outlet>

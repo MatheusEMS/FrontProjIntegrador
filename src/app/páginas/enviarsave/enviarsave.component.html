@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <title>Enviar</title>
+  <style>
+    .navbar{
+      background: linear-gradient(90deg, rgba(255,222,89,1) 0%, rgba(255,145,77,1) 100%);
+    }
+    .container{
+      margin-left: 10%;
+    }
+    .login{
+      background-color: white;
+      color: black;
+
+    }
+    .form-group1{
+      padding-top: 1.5%;
+    }
+    .save{
+      margin-left: 8%;
+    }
+    .botao{
+      margin-left: 40%;
+      margin-top: 1%;
+      background-color: #c1ff72;
+      color: black;
+    }
+    .inicial{
+      margin-left: 5%;
+    }
+
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="../../../assets/images/savegame.png"  width="40" height="40"/>Save Room
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="!usuario; then thenBlock else elseBlock" class="collapse navbar-collapse ml-auto" id="navbarSupportedContent"></div>
+    <ng-template #thenBlock >
+      <div class="ml-auto">
+        <button class="btn btn-outline-success me-2 login " routerLink="/login" type="button">Login</button>
+      </div>
+    </ng-template>
+    <ng-template #elseBlock >
+      <div class="ml-auto">
+        <button *ngIf="usuarioAtt.admin == 'ADMIN'" class="btn btn-outline-success me-2 login" routerLink="/requisicoes" type="button">Requisições</button>
+        <button  class="btn btn-outline-success me-2 login" routerLink="/conta" type="button">{{usuarioAtt.nome}}</button>
+        <button  class="btn btn-outline-success me-2 login" (click)="logout()" type="button">Logout</button>
+      </div>
+    </ng-template>
+  </div>
+</nav>
+<div class="row inicial">
+  <a routerLink="/home"><- Página inicial</a>
+</div>
+<div class="container">
+
+  <div class="row login">
+    <h2>Enviar arquivo de save</h2>
+  </div>
+  <div class="row justify-content-center">
+    <form #saveForm="ngForm" class="needs-validation">
+      <div class="form-group1 row">
+        <label for="console" class="col-form-label col-sm-1">Console*</label>
+        <div ngbDropdown class="d-inline-block col-md-2">
+          <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+            {{selectedConsole}}
+          </button>
+          <div class="text-danger" *ngIf="validacaoConsole == true" >Escolha um console</div>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+            <button ngbDropdownItem [value]="'Nintendinho'" (click)="SetarConsole('1','Nintendinho')">Nintendinho</button>
+            <button ngbDropdownItem [value]="'Super Nintendo'" (click)="SetarConsole('2','Super Nintendo')">Super Nintendo</button>
+            <button ngbDropdownItem [value]="'Mega Drive'" (click)="SetarConsole('3','Mega Drive')">Mega Drive</button>
+            <button ngbDropdownItem [value]="'Playstation'" (click)="SetarConsole('4','Playstation')">Playstation</button>
+            <button ngbDropdownItem [value]="'Nintendo 64'" (click)="SetarConsole('5','Nintendo 64')">Nintendo 64</button>
+            <button ngbDropdownItem [value]="'Playstation 2'" (click)="SetarConsole('6','Playstation 2')">Playstation 2</button>
+            <button ngbDropdownItem [value]="'Gamecube'" (click)="SetarConsole('7','Gamecube')">Gamecube</button>
+            <button ngbDropdownItem [value]="'Xbox'" (click)="SetarConsole('8','Xbox')">Xbox</button>
+            <button ngbDropdownItem [value]="'Outros'" (click)="SetarConsole('9','Outros')">Outros</button>
+          </div>
+        </div>
+          <label for="formFile" class="form-label col-sm-2 save" >Enviar arquivo de Save*</label>
+          <div class="col-md-5">
+          <input class="form-control" type="file" id="formFile" (change)="handleFileSelected($event)">
+            <div *ngIf="validacaoArquivo == true" class="text-danger">Envie um arquivo de save</div>
+        </div>
+      </div>
+      <div class="form-group1 row">
+        <label for="jogo" class="col-form-label col-md-1" aria-describedby="jogoHelp">Jogo*</label>
+        <div ngbDropdown class="d-inline-block col-md-3">
+          <button type="button" class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>
+            {{selectedGame}}
+          </button>
+          <div *ngIf="validacaoJogo == true" class="text-danger">Escolha um jogo ou adicione um</div>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+            <button ngbDropdownItem [value]="''" (click)="SetarJogo('','')" >Nenhum destes</button>
+            <button ngbDropdownItem *ngFor="let jogo of jogos; index as j" [value]="jogo.idJogo" (click)="SetarJogo(jogo.idJogo,jogo.nomeJogo)">{{jogo.nomeJogo}}</button>
+          </div>
+          <div id="jogoHelp" class="form-text">escolha um console para escolher o jogo</div>
+        </div>
+        <div class="col-md-5">
+          <input [(ngModel)]="saveCadastrar.requisicao_nomeJogo" type="text" class="form-control" id="addjogo" name="addjogo" placeholder="Nome do jogo que quer adicionar" >
+          <div id="emailHelp" class="form-text">Não encontrou? Deixe como nenhum destes e adicione o jogo</div>
+        </div>
+      </div>
+      <div class="form-group1 row">
+        <div class="mb-3 col-md-6">
+          <label for="resumo" class="col-form-label" >Resumo do estado do save(onde está no jogo)*</label>
+          <input [(ngModel)]="saveCadastrar.resumo" class="form-control" type="text" id="resumo" name="resumo">
+          <div *ngIf="validacaoResumo == true" class="text-danger">Esse campo não pode estar vazio</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="mb-3 col-md-6">
+          <label for="emuladores" class="col-form-label" >Emulador(es) usado(s)*</label>
+          <input [(ngModel)]="saveCadastrar.emuladores" class="form-control" type="text" id="emuladores" name="emuladores" required="true">
+          <div *ngIf="validacaoEmuladores == true" class="text-danger">Esse campo não pode estar vazio</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="mb-3 col-md-6">
+          <label for="descricao" class="form-label">Descrição mais detalhada do save*</label>
+          <textarea [(ngModel)]="saveCadastrar.descricao" class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+          <div *ngIf="validacaoDescricao == true" class="text-danger">Esse campo não pode estar vazio</div>
+        </div>
+      </div>
+      <button (click)="CadastrarSave()" type="submit" class="btn btn-primary col-md-2 botao">Enviar</button>
+    </form>
+  </div>
+
+
+</div>
+</body>
+</html>
+<router-outlet></router-outlet>

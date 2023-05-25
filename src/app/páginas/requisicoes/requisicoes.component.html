@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <style>
+    .navbar{
+      background: linear-gradient(90deg, rgba(255,222,89,1) 0%, rgba(255,145,77,1) 100%);
+    }
+    .login{
+      background-color: white;
+      color: black;
+
+    }
+    .d-flex{
+      padding-left: 7%;
+      margin-top: 2%;
+    }
+    .enviar{
+      margin-top: 2%;
+      margin-left: 34.9%;
+    }
+    .home2{
+      margin-top: 3%;
+      padding-left: 6%;
+    }
+    .home3{
+      margin-top: 2%;
+    }
+    li {
+      cursor: pointer;
+      text-decoration: underline;
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="../../../assets/images/savegame.png"  width="40" height="40"/>Save Room
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="!usuario; then thenBlock else elseBlock" class="collapse navbar-collapse ml-auto" id="navbarSupportedContent"></div>
+    <ng-template #thenBlock >
+      <div class="ml-auto">
+        <button class="btn btn-outline-success me-2 login " routerLink="/login" type="button">Login</button>
+      </div>
+    </ng-template>
+    <ng-template #elseBlock >
+      <div class="ml-auto">
+        <button class="btn btn-outline-success me-2 login" routerLink="/requisicoes" type="button">Requisições</button>
+        <button  class="btn btn-outline-success me-2 login" routerLink="/conta" type="button">{{usuarioAtt.nome}}</button>
+        <button  class="btn btn-outline-success me-2 login" (click)="logout()" type="button">Logout</button>
+      </div>
+    </ng-template>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <a routerLink="/home"><- Voltar</a>
+  </div>
+  <div class="row text-center">
+    <h2 class="mx-auto">Suas requisições</h2>
+  </div>
+  <div class="row home3">
+    <div class="mx-auto p-2 save" style="width: 1000px;">
+      <div class="card">
+        <div class="card-body">
+          <ul *ngFor="let save of ReqSaves; index as s">
+            <li (click)="IrparaRequisicao(save)">{{!save.requisicao_nomeJogo ? save.nomeJogo : save.requisicao_nomeJogo}} - {{save.nomeConsole}}; Por {{save.nomeUsuario}}</li>
+          </ul>
+          <h3 *ngIf="mensagemDeNulo">Não existe requisições de saves no momento</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<router-outlet></router-outlet>

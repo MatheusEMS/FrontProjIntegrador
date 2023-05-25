@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <style>
+    .navbar{
+      background: linear-gradient(90deg, rgba(255,222,89,1) 0%, rgba(255,145,77,1) 100%);
+    }
+    .login{
+      background-color: white;
+      color: black;
+
+    }
+    .d-flex{
+      padding-left: 7%;
+      margin-top: 2%;
+    }
+    .enviar{
+      margin-top: 2%;
+      margin-left: 34.9%;
+    }
+    .home2{
+      margin-top: 3%;
+      padding-left: 6%;
+    }
+    .home3{
+      margin-top: 2%;
+    }
+    .d-inline-block{
+      margin-left: 41.5%;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="../../../assets/images/savegame.png"  width="40" height="40"/>Save Room
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="!usuario; then thenBlock else elseBlock" class="collapse navbar-collapse ml-auto" id="navbarSupportedContent"></div>
+    <ng-template #thenBlock >
+      <div class="ml-auto">
+        <button class="btn btn-outline-success me-2 login " routerLink="/login" type="button">Login</button>
+      </div>
+    </ng-template>
+    <ng-template #elseBlock >
+      <div class="ml-auto">
+        <button *ngIf="usuarioAtt.admin == 'ADMIN'" class="btn btn-outline-success me-2 login" routerLink="/requisicoes" type="button">Requisições</button>
+        <button  class="btn btn-outline-success me-2 login" routerLink="/conta" type="button">{{usuarioAtt.nome}}</button>
+        <button  class="btn btn-outline-success me-2 login" (click)="logout()" type="button">Logout</button>
+      </div>
+    </ng-template>
+  </div>
+</nav>
+<div class="container">
+  <h2 *ngIf="Foideletado == false">Save confirmado e está disponível no site para download</h2>
+  <h2 *ngIf="Foideletado == true">Save deletado e não está diponível para download</h2>
+  <button  routerLink="/home" class="btn btn-primary col-md-2 botao">Voltar a página inicial</button>
+</div>
+</body>
+</html>
+<router-outlet></router-outlet>
